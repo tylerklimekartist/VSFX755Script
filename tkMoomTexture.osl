@@ -1,0 +1,33 @@
+shader
+tkMoomTexture(
+				string mappath="",
+				color missingAttrColor = color(1,0,1),
+				int linearize = 0
+				[[
+				string widget = "boolean"
+				]],
+				float gamma = 2.2,
+				int flipV = 0	[[
+				string widget = "boolean"
+				]],
+				output color resultRGB = 0)
+{
+
+string pathvalue;
+if(getattribute(mappath, pathvalue) == 1) {
+
+	resultRGB = texture(pathvalue, u, v);
+	if(linearize == 1) {
+		resultRGB[0] = pow(resultRGB[0], gamma);
+		resultRGB[1] = pow(resultRGB[1], gamma);
+		resultRGB[2] = pow(resultRGB[2], gamma);
+	}
+	if(flipV == 1) {
+	resultRGB = texture(pathvalue, u, 1-v);
+	}
+	else resultRGB = resultRGB;
+}
+else
+	resultRGB = missingAttrColor;
+	
+}
